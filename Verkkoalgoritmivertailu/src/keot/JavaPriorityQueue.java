@@ -2,27 +2,48 @@ package keot;
 
 import java.util.PriorityQueue;
 
-public class JavaPriorityQueue<E> implements Minimikeko<Object>{
+public class JavaPriorityQueue<E> implements Minimikeko<E>{
 
     private final PriorityQueue<E> keko;
 
     public JavaPriorityQueue() {
         this.keko = new PriorityQueue<>();
     }
-    
+
     @Override
-    public void insert(Object u) {
-        
+    public void insert(E e) {
+        keko.add(e);
     }
 
     @Override
     public E min() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return keko.peek();
     }
 
     @Override
     public E delMin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return keko.poll();
+    }
+
+    @Override
+    public void decreaseKey(E e) {
+        keko.remove(e);
+        keko.add(e);
+    }
+
+    @Override
+    public boolean empty() {
+        return keko.isEmpty();
+    }
+
+    @Override
+    public void clear() {
+        keko.clear();
+    }
+
+    @Override
+    public int size() {
+        return keko.size();
     }
     
 }
