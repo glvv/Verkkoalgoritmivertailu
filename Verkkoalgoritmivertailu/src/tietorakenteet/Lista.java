@@ -1,26 +1,51 @@
 package tietorakenteet;
 
-import java.lang.reflect.Array;
+import verkko.Kaari;
 
-public class Lista<E> {
+/**
+ * Lista on taulukkopohjainen tietorakennne, johon voi lisätä kaaria. Kaaret
+ * menevät taulukkoon lisäämisjärjestyksessä. Listaan lisääminen ei onnistu, jos
+ * taulukko on täynnä.
+ *
+ */
+public class Lista {
 
-    private E[] taulukko;
+    private final Kaari[] taulukko;
     private int indeksi;
 
-    public Lista(Class<E> c, int koko) {
-        taulukko = (E[]) Array.newInstance(c, koko);
+    /**
+     * Konstruktorissa määritetään taulukon koko.
+     *
+     * @param koko Listan koko.
+     */
+    public Lista(int koko) {
+        taulukko = new Kaari[koko];
         indeksi = 0;
     }
-    
-    public void add(E e) {
+
+    public int getIndeksi() {
+        return indeksi;
+    }
+
+    /**
+     * Metodilla lisätään taulukkoon solmu.
+     *
+     * @param e Lisättävä kaari.
+     */
+    public void add(Kaari e) {
         if (indeksi != taulukko.length) {
             taulukko[indeksi] = e;
             indeksi++;
         }
     }
 
-    public E[] haeTaulukko() {
+    /**
+     * Palauttaa listan sisältämän taulukon.
+     *
+     * @return Listan sisältämä taulukko.
+     */
+    public Kaari[] haeTaulukko() {
         return taulukko;
     }
-            
+
 }

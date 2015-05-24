@@ -1,32 +1,48 @@
 package keot;
 
 import java.util.PriorityQueue;
+import verkko.Solmu;
 
-public class JavaPriorityQueue<E> implements Minimikeko<E>{
+/**
+ * Luokka käärii sisäänsä Javan PriorityQueue-olion.
+ *
+ */
+public class JavaPriorityQueue implements Minimikeko {
 
-    private final PriorityQueue<E> keko;
+    private final PriorityQueue<Solmu> keko;
 
+    /**
+     * Konstruktorissa luodaan uusi PriorityQueue-olio, joka talletetaan
+     * oliomuuttujaan.
+     */
     public JavaPriorityQueue() {
         this.keko = new PriorityQueue<>();
     }
 
     @Override
-    public void insert(E e) {
+    public void insert(Solmu e) {
         keko.add(e);
     }
 
     @Override
-    public E min() {
+    public Solmu min() {
         return keko.peek();
     }
 
     @Override
-    public E delMin() {
+    public Solmu delMin() {
         return keko.poll();
     }
 
+    /**
+     * DecreaseKey on toteutettu siten, että ensin poistetaan alkio ja se
+     * lisätään sinne uudestaan. Metodia ei tule kutsua, jos alkioita ei ole
+     * keossa.
+     *
+     * @param e Alkio, jonka järjestystä muutetaan.
+     */
     @Override
-    public void decreaseKey(E e) {
+    public void decreaseKey(Solmu e) {
         keko.remove(e);
         keko.add(e);
     }
@@ -45,5 +61,5 @@ public class JavaPriorityQueue<E> implements Minimikeko<E>{
     public int size() {
         return keko.size();
     }
-    
+
 }

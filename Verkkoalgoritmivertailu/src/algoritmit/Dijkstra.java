@@ -1,27 +1,45 @@
 package algoritmit;
 
-import domain.Kaari;
-import domain.Solmu;
-import domain.Verkko;
+import verkko.Kaari;
+import verkko.Solmu;
+import verkko.Verkko;
 import keot.Minimikeko;
 
+/**
+ * Luokka, joka tarjoaa polkujen hakemisen Dijkstran algoritmilla.
+ */
 public class Dijkstra {
-    
-    private final Minimikeko<Solmu> keko;
 
-    public Dijkstra(Minimikeko<Solmu> keko) {
+    private final Minimikeko keko;
+
+    /**
+     * Konstruktorissa annetaan parametrina minimikeko, jota algoritmi käyttää.
+     *
+     * @param keko Minimikeko-rajapinnan toteuttama olio, jota algoritmi
+     * käyttää.
+     */
+    public Dijkstra(Minimikeko keko) {
         this.keko = keko;
     }
-    
+
+    /**
+     * Metodi hakee lyhimmät polut Dijkstran algoritmilla syötteenä annetulle
+     * verkolle lähtien annetusta aloitussolmusta. Alkusolmu annetaan sen x- ja
+     * y -koordinaatteina.
+     *
+     * @param alkuX Alkusolmun x-koordinaatti.
+     * @param alkuY Alkusolmun y-koordinaatti.
+     * @param verkko Verkko, josta algoritmi hakee lyhimmät polut.
+     */
     public void haeLyhimmatPolut(int alkuX, int alkuY, Verkko verkko) {
-        Solmu[][] solmut = verkko.haeSolmut();
-        solmut[alkuX][alkuY].setMinimiEtaisyys(0);
-        for (int i = 0; i < solmut.length; i++) {
-            for (int j = 0; j < solmut[0].length; j++) {
-                keko.insert(solmut[i][j]);
+        keko.clear();
+        verkko.haeSolmu(alkuX, alkuY).setMinimiEtaisyys(0);
+        for (int i = 0; i < verkko.haeLeveys(); i++) {
+            for (int j = 0; j < verkko.haePituus(); j++) {
+                keko.insert(verkko.haeSolmu(i, j));
             }
         }
-        while(!keko.empty()) {
+        while (!keko.empty()) {
             Solmu u = keko.delMin();
             u.setKasitelty(true);
             for (Kaari v : u.getKaaret()) {
@@ -35,13 +53,19 @@ public class Dijkstra {
             }
         }
     }
-    
-    private void loysaa(Solmu alkuSolmu, Solmu kohdeSolmu, int paino) {
+
+    /**
+     * Dijkstran algoritmin relax-operaatio.
+     *
+     * @param alkuSolmu Kaaren alkusolmu.
+     * @param kohdeSolmu Kaaren päätesolmu.
+     * @param paino Kaaren paino.
+     */
+    protected void loysaa(Solmu alkuSolmu, Solmu kohdeSolmu, int paino) {
         int etaisyys = alkuSolmu.getMinimiEtaisyys() + paino;
         if (kohdeSolmu.getMinimiEtaisyys() > etaisyys) {
             kohdeSolmu.setMinimiEtaisyys(etaisyys);
             kohdeSolmu.setEdellinen(alkuSolmu);
         }
     }
-    
 }
