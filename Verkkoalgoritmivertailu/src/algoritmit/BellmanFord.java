@@ -38,9 +38,6 @@ public class BellmanFord {
             for (int y = 0; y < g.haePituus(); y++) {
                 Solmu s = g.haeSolmu(x, y);
                 for (Kaari v : s.getKaaret()) {
-                    if (v == null) {
-                        break;
-                    }
                     loysaa(s, v.getKohdeSolmu(), v.getPaino());
                 }
             }
@@ -59,9 +56,6 @@ public class BellmanFord {
             for (int y = 0; y < g.haePituus(); y++) {
                 Solmu s = g.haeSolmu(x, y);
                 for (Kaari v : s.getKaaret()) {
-                    if (v == null) {
-                        break;
-                    }
                     if (v.getKohdeSolmu().getMinimiEtaisyys() > s.getMinimiEtaisyys() + v.getPaino()) {
                         return false;
                     }

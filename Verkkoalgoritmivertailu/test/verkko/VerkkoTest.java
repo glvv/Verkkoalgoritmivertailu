@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import tietorakenteet.Lista;
 
 public class VerkkoTest {
 
@@ -19,10 +20,12 @@ public class VerkkoTest {
     private Verkko verkko;
 
     public VerkkoTest() {
+        
     }
 
     @BeforeClass
     public static void setUpClass() {
+        
     }
 
     @AfterClass
@@ -75,11 +78,9 @@ public class VerkkoTest {
 
     private int laskeKaaret(int solmuX, int solmuY) {
         Solmu s = verkko.haeSolmu(solmuX, solmuY);
-        int kaaria = 8;
+        int kaaria = 0;
         for (Kaari e : s.getKaaret()) {
-            if (e == null) {
-                kaaria--;
-            }
+            kaaria++;
         }
         return kaaria;
     }
@@ -93,24 +94,21 @@ public class VerkkoTest {
     public void luodunVerkonSolmuissaOnOikeaMaaraKaaria2() {
         assertEquals(4, laskeKaaret(1, 1));
     }
-    
+
     @Test
     public void luodunVerkonSolmuissaOnOikeaMaaraKaaria3() {
         assertEquals(3, laskeKaaret(0, 1));
     }
-    
-    private boolean contains(Kaari[] kaaret, Solmu haettava) {
+
+    private boolean contains(Lista kaaret, Solmu haettava) {
         for (Kaari kaari : kaaret) {
-            if (kaari == null) {
-                continue;
-            }
             if (kaari.getKohdeSolmu().equals(haettava)) {
                 return true;
             }
         }
         return false;
     }
-    
+
     @Test
     public void luodunVerkonSolmussaOnOikeatKaaret() {
         Solmu s = verkko.haeSolmu(3, 3);
@@ -119,16 +117,16 @@ public class VerkkoTest {
         assertEquals(true, contains(s.getKaaret(), new Solmu(2, 3)));
         assertEquals(true, contains(s.getKaaret(), new Solmu(4, 3)));
     }
-    
+
     @Test
     public void luodunVerkonSolmussaOikeanPainoisetKaaret() {
         Solmu s = verkko.haeSolmu(3, 3);
-        assertEquals(1 ,s.getKaaret()[0].getPaino());
-        assertEquals(1 ,s.getKaaret()[1].getPaino());
-        assertEquals(100 ,s.getKaaret()[2].getPaino());
-        assertEquals(100 ,s.getKaaret()[3].getPaino());
+        assertEquals(1, s.getKaaret().get(0).getPaino());
+        assertEquals(1, s.getKaaret().get(1).getPaino());
+        assertEquals(100, s.getKaaret().get(2).getPaino());
+        assertEquals(100, s.getKaaret().get(3).getPaino());
     }
-    
+
     @Test
     public void diagonaalisetSolmutLuodaanOikein() {
         Verkko d = new Verkko(kentta, true);
@@ -138,8 +136,5 @@ public class VerkkoTest {
         assertTrue(contains(s.getKaaret(), new Solmu(2, 4)));
         assertTrue(contains(s.getKaaret(), new Solmu(4, 2)));
     }
-    
-    
-    
-    
+
 }

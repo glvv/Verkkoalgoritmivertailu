@@ -1,4 +1,4 @@
-package keot;
+package tietorakenteet;
 
 import verkko.Solmu;
 
@@ -9,7 +9,7 @@ public interface Minimikeko {
 
     public void insert(Solmu u);
 
-    public void decreaseKey(Solmu e);
+    public void decreaseKey(Solmu vanha);
 
     public Solmu min();
 

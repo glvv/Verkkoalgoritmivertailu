@@ -67,8 +67,8 @@ public class BellManFordTest {
 
     @Test
     public void haeLyhimmatPolutPalauttaaFalseJosVerkossaOnNegatiivinenSykli() {
-        verkko.haeSolmu(3, 3).getKaaret()[0].setPaino(-1);
-        verkko.haeSolmu(4, 3).getKaaret()[1].setPaino(-1);
+        verkko.haeSolmu(3, 3).getKaaret().get(0).setPaino(-1);
+        verkko.haeSolmu(4, 3).getKaaret().get(1).setPaino(-1);
         assertEquals(false, bellmanford.haeLyhimmatPolut(verkko, 0, 0));
     }
 

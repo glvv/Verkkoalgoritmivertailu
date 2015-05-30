@@ -1,5 +1,6 @@
 package tietorakenteet;
 
+import java.util.Iterator;
 import verkko.Kaari;
 
 /**
@@ -8,9 +9,9 @@ import verkko.Kaari;
  * taulukko on täynnä.
  *
  */
-public class Lista {
+public class Lista implements Iterable<Kaari> {
 
-    private final Kaari[] taulukko;
+    private final Kaari[] kaaret;
     private int indeksi;
 
     /**
@@ -19,7 +20,7 @@ public class Lista {
      * @param koko Listan koko.
      */
     public Lista(int koko) {
-        taulukko = new Kaari[koko];
+        kaaret = new Kaari[koko];
         indeksi = 0;
     }
 
@@ -33,8 +34,8 @@ public class Lista {
      * @param e Lisättävä kaari.
      */
     public void add(Kaari e) {
-        if (indeksi != taulukko.length) {
-            taulukko[indeksi] = e;
+        if (indeksi != kaaret.length) {
+            kaaret[indeksi] = e;
             indeksi++;
         }
     }
@@ -45,7 +46,16 @@ public class Lista {
      * @return Listan sisältämä taulukko.
      */
     public Kaari[] haeTaulukko() {
-        return taulukko;
+        return kaaret;
+    }
+
+    @Override
+    public Iterator<Kaari> iterator() {
+        return new ListaIterator(indeksi, kaaret);
+    }
+    
+    public Kaari get(int indeksi) {
+        return kaaret[indeksi];
     }
 
 }

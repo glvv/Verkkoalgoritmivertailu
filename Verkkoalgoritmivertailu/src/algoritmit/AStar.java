@@ -1,6 +1,7 @@
 package algoritmit;
 
-import keot.Minimikeko;
+import tietorakenteet.KekoSolmu;
+import tietorakenteet.Minimikeko;
 import verkko.Kaari;
 import verkko.Solmu;
 import verkko.Verkko;
@@ -47,19 +48,15 @@ public class AStar {
             Solmu s = keko.delMin();
             s.setKasitelty(true);
             for (Kaari e : s.getKaaret()) {
-                if (e == null) {
-                    break;
-                }
-                loysaa(s, e.getKohdeSolmu(), e.getPaino());
-                if (!(e.getKohdeSolmu().isKasitelty())) {
-                    keko.decreaseKey(e.getKohdeSolmu());
-                }
+                relax(s, e.getKohdeSolmu(), e.getPaino());
+                Solmu kohdeSolmu = e.getKohdeSolmu();
+                keko.decreaseKey(kohdeSolmu);
             }
         }
     }
 
     /**
-     * Metodi laskee manhattan-etaisyyden kahden solmu välillä.
+     * Metodi laskee manhattan-etaisyyden kahden solmun välillä.
      *
      * @param x Ensimmäisen solmun x-koordinaatti.
      * @param y Ensimmaisen solmun y-koordinaatti.
@@ -78,7 +75,7 @@ public class AStar {
      * @param kohdeSolmu Kaaren päätesolmu.
      * @param paino Kaaren paino.
      */
-    private void loysaa(Solmu alkuSolmu, Solmu kohdeSolmu, int paino) {
+    private void relax(Solmu alkuSolmu, Solmu kohdeSolmu, int paino) {
         int etaisyys = alkuSolmu.getMinimiEtaisyys() + paino;
         if (kohdeSolmu.getMinimiEtaisyys() > etaisyys) {
             kohdeSolmu.setMinimiEtaisyys(etaisyys);

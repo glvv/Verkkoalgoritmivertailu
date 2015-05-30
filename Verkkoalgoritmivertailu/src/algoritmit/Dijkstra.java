@@ -3,7 +3,7 @@ package algoritmit;
 import verkko.Kaari;
 import verkko.Solmu;
 import verkko.Verkko;
-import keot.Minimikeko;
+import tietorakenteet.Minimikeko;
 
 /**
  * Luokka, joka tarjoaa polkujen hakemisen Dijkstran algoritmilla.
@@ -32,24 +32,20 @@ public class Dijkstra {
      * @param verkko Verkko, josta algoritmi hakee lyhimmät polut.
      */
     public void haeLyhimmatPolut(int alkuX, int alkuY, Verkko verkko) {
-        keko.clear();
         verkko.haeSolmu(alkuX, alkuY).setMinimiEtaisyys(0);
         for (int i = 0; i < verkko.haeLeveys(); i++) {
             for (int j = 0; j < verkko.haePituus(); j++) {
-                keko.insert(verkko.haeSolmu(i, j));
+                Solmu s = verkko.haeSolmu(i, j);
+                keko.insert(s);
             }
         }
         while (!keko.empty()) {
             Solmu u = keko.delMin();
             u.setKasitelty(true);
             for (Kaari v : u.getKaaret()) {
-                if (v == null) {
-                    break;
-                }
-                loysaa(u, v.getKohdeSolmu(), v.getPaino());
-                if (!(v.getKohdeSolmu().isKasitelty())) {
-                    keko.decreaseKey(v.getKohdeSolmu());
-                }
+                relax(u, v.getKohdeSolmu(), v.getPaino());
+                Solmu kohdeSolmu = v.getKohdeSolmu();
+                keko.decreaseKey(kohdeSolmu);
             }
         }
     }
@@ -61,7 +57,7 @@ public class Dijkstra {
      * @param kohdeSolmu Kaaren päätesolmu.
      * @param paino Kaaren paino.
      */
-    protected void loysaa(Solmu alkuSolmu, Solmu kohdeSolmu, int paino) {
+    protected void relax(Solmu alkuSolmu, Solmu kohdeSolmu, int paino) {
         int etaisyys = alkuSolmu.getMinimiEtaisyys() + paino;
         if (kohdeSolmu.getMinimiEtaisyys() > etaisyys) {
             kohdeSolmu.setMinimiEtaisyys(etaisyys);

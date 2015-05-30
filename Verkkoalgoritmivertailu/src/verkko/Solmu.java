@@ -1,17 +1,21 @@
 package verkko;
 
+import tietorakenteet.KekoSolmu;
+import tietorakenteet.Lista;
+
 /**
  * Solmu kuvaa verkon solmua.
  */
 public class Solmu implements Comparable<Solmu> {
 
-    private Kaari[] kaaret;
+    private Lista kaaret;
     private final int x;
     private final int y;
     private int minimiEtaisyysAlkusolmusta;
     private int etaisyysLoppusolmuun;
     private Solmu edellinen;
     private boolean kasitelty;
+    private KekoSolmu solmuKeossa;
 
     /**
      * Konstruktorissa alustetaan solmun komponentit.
@@ -27,6 +31,7 @@ public class Solmu implements Comparable<Solmu> {
         this.etaisyysLoppusolmuun = 0;
         this.edellinen = null;
         this.kasitelty = false;
+        this.solmuKeossa = null;
     }
 
     /**
@@ -82,7 +87,7 @@ public class Solmu implements Comparable<Solmu> {
      *
      * @return Solmusta lähtevät kaaret.
      */
-    public Kaari[] getKaaret() {
+    public Lista getKaaret() {
         return kaaret;
     }
 
@@ -91,7 +96,7 @@ public class Solmu implements Comparable<Solmu> {
      *
      * @param kaaret Solmuun asetettavat kaaret.
      */
-    public void setKaaret(Kaari[] kaaret) {
+    public void setKaaret(Lista kaaret) {
         this.kaaret = kaaret;
     }
 
@@ -174,6 +179,14 @@ public class Solmu implements Comparable<Solmu> {
 
     public int getEtaisyysLoppusolmuun() {
         return etaisyysLoppusolmuun;
+    }
+
+    public KekoSolmu getSolmuKeossa() {
+        return solmuKeossa;
+    }
+
+    public void setSolmuKeossa(KekoSolmu solmuKeossa) {
+        this.solmuKeossa = solmuKeossa;
     }
 
 }

@@ -1,12 +1,12 @@
 package algoritmit;
 
-import keot.JavaPriorityQueue;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import tietorakenteet.Binaarikeko;
 import verkko.Verkko;
 
 public class AStarTest {
@@ -43,7 +43,7 @@ public class AStarTest {
     @Before
     public void setUp() {
         verkko = new Verkko(kentta, false);
-        astar = new AStar(new JavaPriorityQueue());
+        astar = new AStar(new Binaarikeko(kentta[0].length * kentta.length));
         astar.haelyhinPolku(verkko, 0, 0, 13, 13);
     }
 

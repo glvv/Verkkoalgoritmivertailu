@@ -54,7 +54,7 @@ public class Verkko {
             haeKaari(x + 1, y - 1, kentta, kaaret);
             haeKaari(x - 1, y - 1, kentta, kaaret);
         }
-        solmut[x][y].setKaaret(kaaret.haeTaulukko());
+        solmut[x][y].setKaaret(kaaret);
     }
 
     /**
