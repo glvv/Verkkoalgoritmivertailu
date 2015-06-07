@@ -42,9 +42,9 @@ public class AStarTest {
 
     @Before
     public void setUp() {
-        verkko = new Verkko(kentta, false);
+        verkko = new Verkko(kentta, false, true);
         astar = new AStar(new Binaarikeko(kentta[0].length * kentta.length));
-        astar.haelyhinPolku(verkko, 0, 0, 13, 13);
+        astar.haeLyhinPolku(verkko, 0, 0, 13, 13);
     }
 
     @After

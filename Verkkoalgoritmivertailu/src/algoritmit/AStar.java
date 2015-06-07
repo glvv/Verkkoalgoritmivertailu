@@ -35,7 +35,7 @@ public class AStar {
      * @param loppuX Toisen solmun x-koordinaatti.
      * @param loppuY Toisen solmun y-koordinaatti.
      */
-    public void haelyhinPolku(Verkko g, int alkuX, int alkuY, int loppuX, int loppuY) {
+    public void haeLyhinPolku(Verkko g, int alkuX, int alkuY, int loppuX, int loppuY) {
         g.haeSolmu(alkuX, alkuY).setMinimiEtaisyys(0);
         for (int x = 0; x < g.haeLeveys(); x++) {
             for (int y = 0; y < g.haePituus(); y++) {

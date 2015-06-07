@@ -34,7 +34,7 @@ public class VerkkoTest {
 
     @Before
     public void setUp() {
-        this.verkko = new Verkko(kentta, false);
+        this.verkko = new Verkko(kentta, false, true);
     }
 
     @After
@@ -129,12 +129,41 @@ public class VerkkoTest {
 
     @Test
     public void diagonaalisetSolmutLuodaanOikein() {
-        Verkko d = new Verkko(kentta, true);
+        Verkko d = new Verkko(kentta, true, true);
         Solmu s = d.haeSolmu(3, 3);
         assertTrue(contains(s.getKaaret(), new Solmu(4, 4)));
         assertTrue(contains(s.getKaaret(), new Solmu(2, 2)));
         assertTrue(contains(s.getKaaret(), new Solmu(2, 4)));
         assertTrue(contains(s.getKaaret(), new Solmu(4, 2)));
+    }
+    
+    @Test
+    public void josSeinienLapiEiSaaLiikkuaNiinNiihinJohtaviaKaariaEiLuoda() {
+        Verkko w = new Verkko(kentta, false, false);
+        Solmu s = w.haeSolmu(1, 0);
+        assertFalse(contains(s.getKaaret(), new Solmu(1, 1)));
+    }
+    
+    @Test
+    public void luodussaVerkossaKaartenMaaraOnOikein() {
+        assertEquals(170, verkko.haeKaartenMaara());
+    }
+    
+    @Test
+    public void luodussaVerkossaSolmujenMaaraOnOikein() {
+        assertEquals(50, verkko.haeSolmujenMaara());
+    }
+    
+    @Test
+    public void kunSeiniinEiLuodaKaariaKaartenMaaraOnOikein() {
+        Verkko g = new Verkko(kentta, false, false);
+        assertEquals(119, g.haeKaartenMaara());
+    }
+    
+    @Test
+    public void kunDiagonaalitOnSallittuNiinKaartenMaaraOnOikein() {
+        Verkko g = new Verkko(kentta, true, true);
+        assertEquals(314, g.haeKaartenMaara());
     }
 
 }

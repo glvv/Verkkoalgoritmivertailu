@@ -19,6 +19,7 @@ public class Bittikartta {
     private static final int punainen = - 8388608;
     private static final int musta = -16777216;
     private static final int ratkaisuPunainen = - 4388608;
+    private static final int kaydytRuudut = - 26711681;
 
     /**
      * Metodi hakee annetusta tiedostopolusta tiedoston ja luo siitä
@@ -132,6 +133,8 @@ public class Bittikartta {
             ratkaistuKuva.setRGB(x, y, maasto);
         } else if (c == '@') {
             ratkaistuKuva.setRGB(x, y, ratkaisuPunainen);
+        } else if (c == '!') {
+            ratkaistuKuva.setRGB(x, y, kaydytRuudut);
         }
     }
 }

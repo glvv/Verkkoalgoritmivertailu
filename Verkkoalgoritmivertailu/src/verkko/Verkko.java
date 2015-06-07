@@ -3,13 +3,16 @@ package verkko;
 import tietorakenteet.Lista;
 
 /**
- * Verkko kuvaa syötteenä annettua ascii-kenttää verkkona, jota algoritmit
+ * Verkko kuvaa syötteenä annettua char-taulukkoa verkkona, jota algoritmit
  * pystyvät käsittelemään.
  */
 public class Verkko {
 
-    private Solmu[][] solmut;
-    private boolean diagonaalitSallittu;
+    private final Solmu[][] solmut;
+    private final boolean diagonaalitSallittu;
+    private final boolean seinienLapiSaaLiikkua;
+    private int kaartenMaara;
+    private final int solmujenMaara;
 
     /**
      * Konstruktorissa annetaan kenttä kaksiulotteisena char-taulukkona, joka
@@ -17,10 +20,15 @@ public class Verkko {
      *
      * @param kentta Muunnettava kaksiulotteinen char-taulukko.
      * @param diagonaalitSallittu Saako verkossa kulkea diagonaalisesti.
+     * @param seinienLapiSaaLiikkua Saako seinien lapi liikkua. Jos seinien läpi
+     * ei saa liikkua, niin seiniin vieviä kaaria ei luoda.
      */
-    public Verkko(char[][] kentta, boolean diagonaalitSallittu) {
+    public Verkko(char[][] kentta, boolean diagonaalitSallittu, boolean seinienLapiSaaLiikkua) {
         this.diagonaalitSallittu = diagonaalitSallittu;
+        this.seinienLapiSaaLiikkua = seinienLapiSaaLiikkua;
         solmut = new Solmu[kentta.length][kentta[0].length];
+        this.kaartenMaara = 0;
+        this.solmujenMaara = kentta.length * kentta[0].length;
         for (int i = 0; i < kentta.length; i++) {
             for (int j = 0; j < kentta[0].length; j++) {
                 solmut[i][j] = new Solmu(i, j);
@@ -31,6 +39,7 @@ public class Verkko {
                 haeKaaret(i, j, kentta);
             }
         }
+        
     }
 
     /**
@@ -68,7 +77,10 @@ public class Verkko {
      */
     private void haeKaari(int x, int y, char[][] kentta, Lista kaaret) {
         if (!(x < 0 || x >= kentta.length || y < 0 || y >= kentta[0].length)) {
-            kaaret.add(new Kaari(solmut[x][y], haePaino(kentta, x, y)));
+            if ((seinienLapiSaaLiikkua || kentta[x][y] != '#')) {
+                kaaret.add(new Kaari(solmut[x][y], haePaino(kentta, x, y)));
+                kaartenMaara++;
+            }
         }
     }
 
@@ -132,4 +144,13 @@ public class Verkko {
     public Solmu haeSolmu(int x, int y) {
         return solmut[x][y];
     }
+
+    public int haeKaartenMaara() {
+        return kaartenMaara;
+    }
+
+    public int haeSolmujenMaara() {
+        return solmujenMaara;
+    }
+    
 }

@@ -173,6 +173,7 @@ public class Binaarikeko implements Minimikeko {
     @Override
     public void clear() {
         solmut = new KekoSolmu[solmut.length];
+        koko = 0;
     }
 
     /**

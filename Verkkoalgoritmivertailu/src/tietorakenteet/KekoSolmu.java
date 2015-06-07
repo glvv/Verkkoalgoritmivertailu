@@ -3,7 +3,7 @@ package tietorakenteet;
 import verkko.Solmu;
 
 /**
- * Luokka, jonja avulla Solmu-olioita talletetaan kekoon.
+ * Luokka, jonka avulla Solmu-olioita talletetaan kekoon.
  */
 public class KekoSolmu implements Comparable<KekoSolmu> {
 

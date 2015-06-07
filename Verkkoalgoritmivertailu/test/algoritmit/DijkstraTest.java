@@ -43,9 +43,9 @@ public class DijkstraTest {
 
     @Before
     public void setUp() {
-        verkko = new Verkko(kentta, false);
+        verkko = new Verkko(kentta, false, true);
         dijkstra = new Dijkstra(new Binaarikeko(kentta[0].length * kentta.length));
-        dijkstra.haeLyhimmatPolut(0, 0, verkko);
+        dijkstra.haeLyhimmatPolut(0, 0, 13, 13, verkko);
     }
 
     @After
@@ -101,11 +101,6 @@ public class DijkstraTest {
     @Test
     public void haeLyhimmatPolutHakeeOikeanPituisenLyhimmanPolun() {
         assertEquals(30, verkko.haeSolmu(13, 13).getMinimiEtaisyys());
-    }
-
-    @Test
-    public void haeLyhimmatPolutHakeeOikeanPituisenLyhimmanPolun2() {
-        assertEquals(230, verkko.haeSolmu(13, 11).getMinimiEtaisyys());
     }
 
     @Test

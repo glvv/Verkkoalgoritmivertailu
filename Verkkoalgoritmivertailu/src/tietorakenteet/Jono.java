@@ -39,29 +39,22 @@ public class Jono {
      * @return Boolean-arvo riippuen siitä onko jono täysi.
      */
     public boolean full() {
-        int l1 = loppu + 1;
-        if (l1 == koko) {
-            l1 = 0;
-        }
-        return l1 == alku;
+        return loppu == koko;
     }
 
     /**
      * Metodilla lisätään uusi Solmu jonoon.
      *
      * @param s Lisättävä solmu.
-     * @return Onnistuiko lisäys.
      */
-    public boolean enqueue(Solmu s) {
+    public void enqueue(Solmu s) {
         if (!full()) {
             solmut[loppu] = s;
             loppu++;
-            if (loppu == koko) {
-                loppu = 0;
-            }
-            return true;
+        } else {
+            grow();
+            enqueue(s);
         }
-        return false;
     }
 
     /**
@@ -70,12 +63,32 @@ public class Jono {
      * @return Poistettu solmu.
      */
     public Solmu dequeue() {
-        Solmu s = solmut[alku];
-        alku++;
-        if (alku == koko) {
-            alku = 0;
+        if (!empty()) {
+            Solmu s = solmut[alku];
+            alku++;
+            return s;
         }
-        return s;
+        return null;
+    }
+
+    /**
+     * Metodi kasvattaa jonon kaksinkertaiseksi.
+     */
+    private void grow() {
+        Solmu[] isompiKopio = new Solmu[solmut.length * 2];
+        int a = 0;
+        for (int i = alku; i < loppu; i++) {
+                isompiKopio[a] = solmut[i];
+                a++;
+        }
+        alku = 0;
+        loppu = a;
+        koko = solmut.length * 2;
+        solmut = isompiKopio;
+    }
+
+    public int getKoko() {
+        return koko;
     }
 
 }

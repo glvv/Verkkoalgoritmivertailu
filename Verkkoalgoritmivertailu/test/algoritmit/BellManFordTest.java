@@ -41,7 +41,7 @@ public class BellManFordTest {
 
     @Before
     public void setUp() {
-        verkko = new Verkko(kentta, false);
+        verkko = new Verkko(kentta, false, true);
         bellmanford = new BellmanFord();
         bellmanford.haeLyhimmatPolut(verkko, 0, 0);
     }

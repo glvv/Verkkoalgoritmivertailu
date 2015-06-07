@@ -81,23 +81,17 @@ public class JonoTest {
     }
     
     @Test
-    public void kunTayteenJonoonTehdaanDequeueOperaatioNiinJonoEiOleTaysi() {
+    public void tayteenJonoonLisaamisenJalkeenJonoKasvaa() {
         lisaaAlkioitaJonoon(5);
-        jono.dequeue();
-        assertFalse(jono.full());
+        jono.enqueue(solmut[0]);
+        assertEquals(10, jono.getKoko());
     }
     
     @Test
-    public void kunTayteenJonoonTehdaanDequeueOperaatioNiinLisaaminenOnnistuu() {
+    public void kunTayteenJonoonTehdaanDequeueNiinJonoOnEdelleenTaysi() {
         lisaaAlkioitaJonoon(5);
         jono.dequeue();
-        assertTrue(jono.enqueue(solmut[0]));
-    }
-    
-    @Test
-    public void tayteenJonoonLisaaminenEiOnnistu() {
-        lisaaAlkioitaJonoon(5);
-        assertFalse(jono.enqueue(solmut[2]));
+        assertTrue(jono.full());
     }
 
 }
