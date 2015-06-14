@@ -8,7 +8,7 @@ import tietorakenteet.Lista;
  */
 public class Solmu implements Comparable<Solmu> {
 
-    private Lista kaaret;
+    private Lista<Kaari> kaaret;
     private final int x;
     private final int y;
     private int minimiEtaisyysAlkusolmusta;
@@ -87,7 +87,7 @@ public class Solmu implements Comparable<Solmu> {
      *
      * @return Solmusta lähtevät kaaret.
      */
-    public Lista getKaaret() {
+    public Lista<Kaari> getKaaret() {
         return kaaret;
     }
 

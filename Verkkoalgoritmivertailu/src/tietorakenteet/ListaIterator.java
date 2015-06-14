@@ -1,30 +1,34 @@
 package tietorakenteet;
 
 import java.util.Iterator;
-import verkko.Kaari;
 
-public class ListaIterator implements Iterator<Kaari> {
+/**
+ * Iteraattori Lista-luokan olioiden iterointia varten.
+ *
+ * @param <E> Minkä tyyppisiä alkioita iteroidaan.
+ */
+public class ListaIterator<E> implements Iterator<E> {
 
-    private int koko;
+    private int alkioita;
     private int indeksi;
-    private Kaari[] kaaret;
-    
-    public ListaIterator(int koko, Kaari[] kaaret) {
-        this.koko = koko;
+    private final E[] taulukko;
+
+    public ListaIterator(int koko, E[] kaaret) {
+        this.alkioita = koko;
         this.indeksi = 0;
-        this.kaaret = kaaret;
+        this.taulukko = kaaret;
     }
-    
+
     @Override
     public boolean hasNext() {
-        return indeksi < koko;
+        return indeksi < alkioita;
     }
 
     @Override
-    public Kaari next() {
-        Kaari k = kaaret[indeksi];
+    public E next() {
+        E k = taulukko[indeksi];
         indeksi++;
         return k;
     }
-    
+
 }

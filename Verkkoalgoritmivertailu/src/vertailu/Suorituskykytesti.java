@@ -2,92 +2,78 @@ package vertailu;
 
 import algoritmit.*;
 import io.Bittikartta;
-import tietorakenteet.Binaarikeko;
+import tietorakenteet.*;
 import verkko.Solmu;
 import verkko.Verkko;
 
+/**
+ * Luokka tarjoaa toiminnallisuuden Polunetsintäalgoritmien suorituskyvyn
+ * testaamiseen.
+ */
 public class Suorituskykytesti {
 
     public static void main(String[] args) {
-        testaaLabyrintti("labyrintti100100");
-        testaaLabyrintti("labyrintti250250");
-        testaaLabyrintti("labyrintti300300");
-        testaaLabyrintti("labyrintti250500");
-        testaaLabyrintti("labyrintti500500");
-        testaaLabyrintti("labyrintti5001000");
-        testaaLabyrintti("labyrintti10001000");
-        testaaLabyrintti("labyrintti10002000");
-        testaaLabyrintti("labyrintti20002000");
-        testaaLabyrintti("labyrintti20004000");
-        testaaLabyrintti("labyrintti40004000");
+        testaaLabyrintti(9, new Fibonaccikeko(), false, 10);
     }
 
     /**
-     * Metodi testaa Dijkstra, A*, Bellman-Ford, BFS ja Bidirectional
-     * algoritmien suorituskykyä mustavalkoisella labyrintilla. Metodi luo eri
-     * algoritmien ratkaisut samaan kansioon. Ratkaisuissa polku on väritetty
-     * punaisella, käydyt solmut harmaalla. Metodi on tarkoitettu painottomien
-     * verkkojen testaamiseen.
+     * Metodi testaa labyrintin Dijkstra, A*, BFS ja Bidirectional
+     * -algoritmeilla.
      *
-     * @param kuvaTiedosto bmp-muotoisen kuvatiedoston nimi images-kansiossa
-     * ilman tiedostopäätettä.
+     * @param testikuva Testikuvan indeksi testikuvataulukossa.
+     * @param keko Keko, jota Dijkstra ja A* -algoritmit käyttävät.
+     * @param luoRatkaisut Luodaanko kuvat, joihin ratkaisut ja läpikäydyt
+     * solmut ovat piirretty.
      */
-    public static void testaaLabyrintti(String kuvaTiedosto) {
-        char[][] kentta = Bittikartta.luoKentta("images/" + kuvaTiedosto + ".bmp");
+    public static void testaaLabyrintti(int testikuva, Minimikeko keko, boolean luoRatkaisut, int toistoKertoja) {
+        long[] tulokset = new long[2];
+        for (int i = 0; i < toistoKertoja; i++) {
+            String kuva = testiLabyrintit[testikuva];
+            keko.clear();
+            tulokset[0] += testaaKentta(kuva, new Dijkstra(keko), luoRatkaisut, false);
+            keko.clear();
+            tulokset[1] += testaaKentta(kuva, new AStar(keko), luoRatkaisut, false);
+//            tulokset[2] += testaaKentta(kuva, new BFS(), luoRatkaisut, false);
+//            tulokset[3] += testaaKentta(kuva, new Bidirectional(), luoRatkaisut, false);
+        }
+        for (int i = 0; i < 2; i++) {
+            tulokset[i] = tulokset[i] / toistoKertoja;
+            System.out.println(tulokset[i]);
+        }
+    }
+
+    /**
+     * Metodi testaa polunetsintäalgoritmin suorituskykyä -algoritmien
+     * suorituskykyä mustavalkoisella labyrintilla, joka on painoton verkko.
+     * Metodi luo labyrintin rakaisun images-kansioon. Ratkaisuissa polku on
+     * väritetty punaisella, käydyt solmut harmaalla. Metodi palauttaa
+     * polunetsintään kuluneen ajan.
+     *
+     * @param kuvaTiedostoPolku Kuvan tiedostopolku.
+     * @param algoritmi Algoritmi, jolla polunetsintä suoritetaan.
+     * @param luoRatkaisu Luodaanko uusi kuva, johon ratkaisu on piirretty.
+     * @param luoKaaretMustiinRuutuihin Luodaanko kaaret mustiin ruutuihin. Kun
+     * arvoksi asetetaan false ja kuva on mustavalkoinen saadaan aikaiseksi
+     * painoton verkko.
+     * @return Haun kesto.
+     */
+    public static long testaaKentta(String kuvaTiedostoPolku, PolunetsintaAlgoritmi algoritmi, boolean luoRatkaisu, boolean luoKaaretMustiinRuutuihin) {
+        char[][] kentta = Bittikartta.luoKentta(kuvaTiedostoPolku);
         int leveys = kentta.length;
         int pituus = kentta[0].length;
 
-        Binaarikeko keko = new Binaarikeko(leveys * pituus);
-        Dijkstra dijkstra = new Dijkstra(keko);
-
-        Verkko verkko = new Verkko(kentta, false, false);
-        System.out.println("Verkossa on " + verkko.haeSolmujenMaara() + " solmua ja " + verkko.haeKaartenMaara() + " kaarta.");
-
+        Verkko verkko = new Verkko(kentta, false, luoKaaretMustiinRuutuihin);
+        
+        System.gc();
         long a = System.currentTimeMillis();
-        dijkstra.haeLyhimmatPolut(0, 0, leveys - 1, pituus - 1, verkko);
+        algoritmi.haeLyhinPolku(verkko, 0, 0, leveys - 1, pituus - 1);
         long b = System.currentTimeMillis();
-        long dijkstranTulos = b - a;
-        keko.clear();
-        System.out.println("Dijkstran algoritmilla reitinhaku kesti " + dijkstranTulos + " millisekuntia.");
-        kirjoitaRatkaisu(verkko, "images/" + kuvaTiedosto + "DijkstraRatkaisu.bmp", kentta, leveys - 1, pituus - 1);
+        long tulos = b - a;
 
-        verkko = new Verkko(kentta, false, false);
-        AStar astar = new AStar(keko);
-        a = System.currentTimeMillis();
-        astar.haeLyhinPolku(verkko, 0, 0, leveys - 1, pituus - 1);
-        b = System.currentTimeMillis();
-        long aStarTulos = b - a;
-        keko.clear();
-        System.out.println("A*-algoritmilla reitinhaku kesti " + aStarTulos + " millisekuntia.");
-        kirjoitaRatkaisu(verkko, "images/" + kuvaTiedosto + "AStarRatkaisu.bmp", kentta, leveys - 1, pituus - 1);
-
-        verkko = new Verkko(kentta, false, false);
-        BFS bfs = new BFS();
-        a = System.currentTimeMillis();
-        bfs.haeLyhinPolku(verkko, 0, 0, leveys - 1, pituus - 1);
-        b = System.currentTimeMillis();
-        long bfsTulos = b - a;
-        System.out.println("Leveyssuuntaisella läpikäynnillä reitinhaku kesti " + bfsTulos + " millisekuntia.");
-        kirjoitaRatkaisu(verkko, "images/" + kuvaTiedosto + "BFSRatkaisu.bmp", kentta, leveys - 1, pituus - 1);
-
-        verkko = new Verkko(kentta, false, false);
-        Bidirectional bd = new Bidirectional();
-        a = System.currentTimeMillis();
-        bd.haeLyhinPolku(verkko, 0, 0, leveys - 1, pituus - 1);
-        b = System.currentTimeMillis();
-        long bdTulos = b - a;
-        System.out.println("Bidirectional-algoritmilla reitinhaku kesti " + bdTulos + " millisekuntia.");
-        kirjoitaRatkaisu(verkko, "images/" + kuvaTiedosto + "BiDirectionalRatkaisu.bmp", kentta, leveys - 1, pituus - 1);
-
-//        verkko = new Verkko(kentta, false, false);
-//        BellmanFord bmf = new BellmanFord();
-//        a = System.currentTimeMillis();
-//        bmf.haeLyhimmatPolut(verkko, 0, 0);
-//        b = System.currentTimeMillis();
-//        long bmfTulos = b - a;
-//        System.out.println("Bellman-Fordin algoritmilla reitinhaku kesti " + bmfTulos + " millisekuntia.");
-//        kirjoitaRatkaisu(verkko, "images/" + kuvaTiedosto + "BMFRatkaisu.bmp", kentta, leveys - 1, pituus - 1);
-        System.out.println();
+        if (luoRatkaisu) {
+            kirjoitaRatkaisu(verkko, "images/" + algoritmi.algoritminNimi() + "Ratkaisu.bmp", kentta, leveys - 1, pituus - 1);
+        }
+        return tulos;
     }
 
     /**
@@ -126,8 +112,7 @@ public class Suorituskykytesti {
 
     /**
      * Metodi kay annetun verkon läpi ja asettaa char-taulukkoon huutomerkin
-     * kaikkien solmujen, jotka algoritmi on läpikäynyt, kohdalle. Bellman-Ford
-     * algoritmi ei merkitse solmuja.
+     * kaikkien solmujen, jotka algoritmi on merkinnyt läpikäydyksi, kohdalle.
      *
      * @param ratkaisu Kaksiulotteinen char-taulukko, johon läpikäydyt solmut
      * kirjoitetaan.
@@ -163,4 +148,17 @@ public class Suorituskykytesti {
         }
         return kopio;
     }
+
+    private static final String[] testiLabyrintit = {
+        "images/labyrintti100100.bmp",
+        "images/labyrintti251251.bmp",
+        "images/labyrintti300300.bmp",
+        "images/labyrintti251502.bmp",
+        "images/labyrintti500500.bmp",
+        "images/labyrintti5001000.bmp",
+        "images/labyrintti10001000.bmp",
+        "images/labyrintti10002000.bmp",
+        "images/labyrintti20002000.bmp",
+        "images/labyrintti20004000.bmp",
+        "images/labyrintti40004000.bmp",};
 }

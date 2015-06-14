@@ -100,7 +100,7 @@ public class VerkkoTest {
         assertEquals(3, laskeKaaret(0, 1));
     }
 
-    private boolean contains(Lista kaaret, Solmu haettava) {
+    private boolean contains(Lista<Kaari> kaaret, Solmu haettava) {
         for (Kaari kaari : kaaret) {
             if (kaari.getKohdeSolmu().equals(haettava)) {
                 return true;

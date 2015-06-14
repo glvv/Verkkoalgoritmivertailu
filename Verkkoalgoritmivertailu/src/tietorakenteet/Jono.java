@@ -3,7 +3,7 @@ package tietorakenteet;
 import verkko.Solmu;
 
 /**
- * Jono on Solmu-olioita tallettava taulukkopohjainen jono.
+ * Jono on Solmu olioita tallettava taulukkopohjainen jono, joka kasvaa automaattisesti.
  */
 public class Jono {
 
@@ -78,8 +78,8 @@ public class Jono {
         Solmu[] isompiKopio = new Solmu[solmut.length * 2];
         int a = 0;
         for (int i = alku; i < loppu; i++) {
-                isompiKopio[a] = solmut[i];
-                a++;
+            isompiKopio[a] = solmut[i];
+            a++;
         }
         alku = 0;
         loppu = a;

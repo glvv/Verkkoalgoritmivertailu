@@ -7,7 +7,7 @@ import verkko.Solmu;
  */
 public class Binaarikeko implements Minimikeko {
 
-    private KekoSolmu[] solmut;
+    private BinaariKekoSolmu[] solmut;
     protected int koko;
 
     /**
@@ -17,7 +17,7 @@ public class Binaarikeko implements Minimikeko {
      * @param koko Binaarikeon koko.
      */
     public Binaarikeko(int koko) {
-        this.solmut = new KekoSolmu[koko];
+        this.solmut = new BinaariKekoSolmu[koko];
         this.koko = 0;
     }
 
@@ -93,7 +93,7 @@ public class Binaarikeko implements Minimikeko {
      */
     @Override
     public void insert(Solmu u) {
-        KekoSolmu uusi = new KekoSolmu(u);
+        BinaariKekoSolmu uusi = new BinaariKekoSolmu(u);
         u.setSolmuKeossa(uusi);
 
         int i = koko;
@@ -115,7 +115,7 @@ public class Binaarikeko implements Minimikeko {
     @Override
     public void decreaseKey(Solmu s) {
         int uusiArvo = s.getEtaisyysLoppusolmuun() + s.getMinimiEtaisyys();
-        KekoSolmu k = s.getSolmuKeossa();
+        BinaariKekoSolmu k = (BinaariKekoSolmu) s.getSolmuKeossa();
         if (uusiArvo < k.getAvainArvo()) {
             k.setAvainArvo(uusiArvo);
             int i = k.getIndeksiKeossa();
@@ -133,8 +133,8 @@ public class Binaarikeko implements Minimikeko {
      * @param i2
      */
     private void vaihda(int i, int i2) {
-        KekoSolmu c = solmut[i];
-        KekoSolmu p = solmut[i2];
+        BinaariKekoSolmu c = solmut[i];
+        BinaariKekoSolmu p = solmut[i2];
 
         solmut[i2] = c;
         c.setIndeksiKeossa(i2);
@@ -172,7 +172,7 @@ public class Binaarikeko implements Minimikeko {
      */
     @Override
     public void clear() {
-        solmut = new KekoSolmu[solmut.length];
+        solmut = new BinaariKekoSolmu[solmut.length];
         koko = 0;
     }
 
@@ -191,7 +191,7 @@ public class Binaarikeko implements Minimikeko {
      *
      * @return Keossa olevat kekosolmut.
      */
-    protected KekoSolmu[] getSolmut() {
+    protected BinaariKekoSolmu[] getSolmut() {
         return solmut;
     }
 

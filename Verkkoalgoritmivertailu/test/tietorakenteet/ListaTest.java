@@ -12,7 +12,7 @@ import verkko.Solmu;
 public class ListaTest {
     
     private Kaari s;
-    private Lista lista;
+    private Lista<Kaari> lista;
     
     public ListaTest() {
     }
@@ -27,7 +27,7 @@ public class ListaTest {
     
     @Before
     public void setUp() {
-        lista = new Lista(3);
+        lista = new Lista<>(3);
         s = new Kaari(new Solmu(5, 5), 2);
     }
     
@@ -47,23 +47,33 @@ public class ListaTest {
     
     @Test
     public void lisaamisenJalkeenLisattyAlkioOnOikeassaPaikassa() {
-        lista.add(s);
-        Kaari e = lista.haeTaulukko()[0];
+        lisaaKaaria(1);
+        Kaari e = (Kaari) lista.haeTaulukko()[0];
         assertEquals(s, e);
     }
     
     @Test
     public void lisaamisenJalkeenIndeksiOnOikein() {
-        lista.add(s);
+        lisaaKaaria(1);
         assertEquals(1, lista.getIndeksi());
+    }
+    
+    private void lisaaKaaria(int maara) {
+        for (int i = 0; i < maara; i++) {
+            lista.add(s);
+        }
     }
     
     @Test
     public void listanVoiLisataTayteen() {
-        lista.add(s);
-        lista.add(s);
-        lista.add(s);
+        lisaaKaaria(3);
         assertEquals(3, lista.getIndeksi());
+    }
+    
+    @Test
+    public void kunListaOnTaynnaSeKasvaaKaksinKertaiseksiKunSiihenLisataan() {
+        lisaaKaaria(4);
+        assertEquals(6, lista.koko());
     }
     
 }

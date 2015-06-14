@@ -1,6 +1,5 @@
 package algoritmit;
 
-import tietorakenteet.KekoSolmu;
 import tietorakenteet.Minimikeko;
 import verkko.Kaari;
 import verkko.Solmu;
@@ -11,9 +10,9 @@ import verkko.Verkko;
  * A*-algoritmilla.
  *
  */
-public class AStar {
+public class AStar implements PolunetsintaAlgoritmi {
 
-    private Minimikeko keko;
+    private final Minimikeko keko;
 
     /**
      * Konstruktorissa annetaan parametrina minimikeko, jota A*-algoritmi
@@ -27,7 +26,7 @@ public class AStar {
 
     /**
      * Metodi hakee lyhimmän polun A*-algoritmilla annetussa verkossa
-     * alkusolmusta loppusolmuun.
+     * alkusolmusta annettuun loppusolmuun.
      *
      * @param g Verkko, jossa haku tehdään.
      * @param alkuX Ensimmäisen solmun x-koordinaatti.
@@ -35,6 +34,7 @@ public class AStar {
      * @param loppuX Toisen solmun x-koordinaatti.
      * @param loppuY Toisen solmun y-koordinaatti.
      */
+    @Override
     public void haeLyhinPolku(Verkko g, int alkuX, int alkuY, int loppuX, int loppuY) {
         g.haeSolmu(alkuX, alkuY).setMinimiEtaisyys(0);
         for (int x = 0; x < g.haeLeveys(); x++) {
@@ -81,6 +81,16 @@ public class AStar {
             kohdeSolmu.setMinimiEtaisyys(etaisyys);
             kohdeSolmu.setEdellinen(alkuSolmu);
         }
+    }
+    
+    @Override
+    public String tulos(long tulosMillisekunteina) {
+        return "A*-algoritmilla polunetsintä kesti " + tulosMillisekunteina + " millisekuntia.";
+    }
+
+    @Override
+    public String algoritminNimi() {
+        return "A*";
     }
 
 }

@@ -9,10 +9,11 @@ import verkko.Verkko;
  * Luokka tarjoaa toiminnallisuuden lyhimmän polun etsimiseen painottomassa
  * verkossa leveysssuuntaisella läpikäynnillä.
  */
-public class BFS {
+public class BFS implements PolunetsintaAlgoritmi {
 
     /**
-     * Metodi hakee lyhimmän polun alkusolmusta loppusolmuun leveyssuutaisella läpikäynnillä.
+     * Metodi hakee lyhimmän polun alkusolmusta loppusolmuun leveyssuutaisella
+     * läpikäynnillä.
      *
      * @param verkko Verkko, jossa haku tehdään.
      * @param alkuX Alkusolmun x-koordinaatti.
@@ -20,6 +21,7 @@ public class BFS {
      * @param loppuX Loppusolmun x-koordinaatti.
      * @param loppuY Loppusolmun y-koordinaatti.
      */
+    @Override
     public void haeLyhinPolku(Verkko verkko, int alkuX, int alkuY, int loppuX, int loppuY) {
         Solmu alkuSolmu = verkko.haeSolmu(alkuX, alkuY);
         alkuSolmu.setMinimiEtaisyys(0);
@@ -27,7 +29,7 @@ public class BFS {
 
         Jono jono = new Jono(10);
         jono.enqueue(alkuSolmu);
-        
+
         while (!verkko.haeSolmu(loppuX, loppuY).isKasitelty()) {
             Solmu u = jono.dequeue();
             for (Kaari v : u.getKaaret()) {
@@ -41,4 +43,16 @@ public class BFS {
             }
         }
     }
+
+    @Override
+    public String tulos(long tulosMillisekunteina) {
+        return "Leveyssuuntaisella läpikäynnillä polunetsintä kesti " + tulosMillisekunteina + " millisekuntia";
+    }
+
+    @Override
+    public String algoritminNimi() {
+        return "BFS";
+    }
+
+    
 }

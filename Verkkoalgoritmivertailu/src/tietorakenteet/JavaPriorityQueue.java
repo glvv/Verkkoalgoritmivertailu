@@ -9,7 +9,7 @@ import verkko.Solmu;
  */
 public class JavaPriorityQueue implements Minimikeko {
 
-    private final PriorityQueue<KekoSolmu> keko;
+    private final PriorityQueue<BinaariKekoSolmu> keko;
 
     /**
      * Konstruktorissa luodaan uusi PriorityQueue-olio, joka talletetaan
@@ -27,7 +27,7 @@ public class JavaPriorityQueue implements Minimikeko {
      */
     @Override
     public void insert(Solmu e) {
-        KekoSolmu uusi = new KekoSolmu(e);
+        BinaariKekoSolmu uusi = new BinaariKekoSolmu(e);
         e.setSolmuKeossa(uusi);
         keko.add(uusi);
     }
@@ -61,7 +61,7 @@ public class JavaPriorityQueue implements Minimikeko {
     @Override
     public void decreaseKey(Solmu vanha) {
         int uusiArvo = vanha.getEtaisyysLoppusolmuun() + vanha.getMinimiEtaisyys();
-        KekoSolmu ks = vanha.getSolmuKeossa();
+        BinaariKekoSolmu ks = (BinaariKekoSolmu) vanha.getSolmuKeossa();
         if (keko.contains(ks)) {
             keko.remove(ks);
             ks.setAvainArvo(uusiArvo);

@@ -72,7 +72,8 @@ public class BinaarikekoTest {
     @Test
     public void lisayksenJalkeenKekoSolmunIndeksiOnOikein() {
         keko.insert(solmut[0]);
-        assertEquals(0, solmut[0].getSolmuKeossa().getIndeksiKeossa());
+        BinaariKekoSolmu s = (BinaariKekoSolmu) solmut[0].getSolmuKeossa();
+        assertEquals(0, s.getIndeksiKeossa());
     }
     
     private void lisaaSolmujaKekoon(int i) {
@@ -103,33 +104,38 @@ public class BinaarikekoTest {
     @Test
     public void kahdenSolmunLisaamisenJalkeenJalkimmaisenIndeksiOnOikeinKunJarjestystaMuutetaan() {
         lisaaSolmujaKekoon(2);
-        assertEquals(0, solmut[1].getSolmuKeossa().getIndeksiKeossa());
+        BinaariKekoSolmu s = (BinaariKekoSolmu) solmut[1].getSolmuKeossa();
+        assertEquals(0, s.getIndeksiKeossa());
     }
     
     @Test
     public void kahdenAlkionLisaamisenJalkeenEnsimmaisenIndeksiOnOikeinKunJarjestystaMuutetaan() {
         lisaaSolmujaKekoon(2);
-        assertEquals(1, solmut[0].getSolmuKeossa().getIndeksiKeossa());
+        BinaariKekoSolmu s = (BinaariKekoSolmu) solmut[0].getSolmuKeossa();
+        assertEquals(1, s.getIndeksiKeossa());
     }
     
     @Test
     public void kahdenSolmunLisaamisenJalkeenJalkimmaisenIndeksiOnOikeinKunJarjestystaEiMuuteta() {
         keko.insert(solmut[1]);
         keko.insert(solmut[0]);
-        assertEquals(0, solmut[1].getSolmuKeossa().getIndeksiKeossa());
+        BinaariKekoSolmu s = (BinaariKekoSolmu) solmut[1].getSolmuKeossa();
+        assertEquals(0, s.getIndeksiKeossa());
     }
     
     @Test
     public void kahdenSolmunLisaamisenJalkeenEnsimmaisenIndeksiOnOikeinKunJarjestystaEiMuuteta() {
         keko.insert(solmut[1]);
         keko.insert(solmut[0]);
-        assertEquals(1, solmut[0].getSolmuKeossa().getIndeksiKeossa());
+        BinaariKekoSolmu s = (BinaariKekoSolmu) solmut[0].getSolmuKeossa();
+        assertEquals(1, s.getIndeksiKeossa());
     }
     
     @Test
     public void viidenSolmunLisaamisenJalkeenViimeisenIndeksiOnOikein() {
         lisaaSolmujaKekoon(5);
-        assertEquals(0, solmut[4].getSolmuKeossa().getIndeksiKeossa());
+        BinaariKekoSolmu s = (BinaariKekoSolmu) solmut[4].getSolmuKeossa();
+        assertEquals(0, s.getIndeksiKeossa());
     }
     
     @Test
@@ -138,7 +144,7 @@ public class BinaarikekoTest {
         assertEquals(solmut[4], keko.delMin());
     }
     
-    private boolean tarkistaIndeksit(KekoSolmu[] kekosolmut) {
+    private boolean tarkistaIndeksit(BinaariKekoSolmu[] kekosolmut) {
         for (int i = 0; i < kekosolmut.length; i++) {
             if (kekosolmut[i].getIndeksiKeossa() != i) {
                 return false;
@@ -186,7 +192,8 @@ public class BinaarikekoTest {
     @Test
     public void decreaseKeyOperaationJalkeenIndeksitOvatKekoSolmuissaOikeinKunJarjestystaEiOleMuutettu() {
         muutaMinimietaisyyttaKeossa(5, 2);
-        assertEquals(1, solmut[0].getSolmuKeossa().getIndeksiKeossa());
+        BinaariKekoSolmu s = (BinaariKekoSolmu) solmut[0].getSolmuKeossa();
+        assertEquals(1, s.getIndeksiKeossa());
     }
     
     @Test
@@ -207,7 +214,8 @@ public class BinaarikekoTest {
     public void delMinOperaationJalkeenToiseksiPienimmanAlkionIndeksiPaivittyy() {
         lisaaSolmujaKekoon(5);
         keko.delMin();
-        assertEquals(0, solmut[3].getSolmuKeossa().getIndeksiKeossa());
+        BinaariKekoSolmu s = (BinaariKekoSolmu) solmut[3].getSolmuKeossa();
+        assertEquals(0, s.getIndeksiKeossa());
     }
     
 }

@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import tietorakenteet.Binaarikeko;
+import tietorakenteet.Fibonaccikeko;
 import verkko.Solmu;
 import verkko.Verkko;
 
@@ -45,7 +46,7 @@ public class DijkstraTest {
     public void setUp() {
         verkko = new Verkko(kentta, false, true);
         dijkstra = new Dijkstra(new Binaarikeko(kentta[0].length * kentta.length));
-        dijkstra.haeLyhimmatPolut(0, 0, 13, 13, verkko);
+        dijkstra.haeLyhinPolku(verkko, 0, 0, 13, 13);
     }
 
     @After

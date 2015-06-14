@@ -8,7 +8,7 @@ import verkko.Verkko;
  * Luokka tarjoaa toiminnallisuuden lyhimpien polkujen etsintään Bellman-Ford
  * -algoritmilla.
  */
-public class BellmanFord {
+public class BellmanFord implements PolunetsintaAlgoritmi {
 
     /**
      * Metodi hakee lyhimmät polut annetussa verkossa alkusolmusta kaikkiin
@@ -81,4 +81,19 @@ public class BellmanFord {
         }
     }
 
+    @Override
+    public void haeLyhinPolku(Verkko g, int alkuX, int alkuY, int loppuX, int loppuY) {
+        haeLyhimmatPolut(g, alkuX, alkuY);
+    }
+
+    @Override
+    public String tulos(long tulosMillisekunteina) {
+        return "Bellman-Ford -algoritmilla polunetsintä kesti " + tulosMillisekunteina + " millisekuntia.";
+    }
+
+    @Override
+    public String algoritminNimi() {
+        return "BellmanFord";
+    }
+    
 }

@@ -8,7 +8,7 @@ import tietorakenteet.Minimikeko;
 /**
  * Luokka, joka tarjoaa polkujen hakemisen Dijkstran algoritmilla.
  */
-public class Dijkstra {
+public class Dijkstra implements PolunetsintaAlgoritmi {
 
     private final Minimikeko keko;
 
@@ -24,16 +24,17 @@ public class Dijkstra {
 
     /**
      * Metodi hakee lyhimmän polun Dijkstran algoritmilla syötteenä annetulle
-     * verkolle alkusolmusta loppusolmuun. Alkusolmu ja loppusolmu annetaan sen x- ja
-     * y -koordinaatteina.
+     * verkolle alkusolmusta loppusolmuun. Alkusolmu ja loppusolmu annetaan sen
+     * x- ja y -koordinaatteina.
      *
      * @param alkuX Alkusolmun x-koordinaatti.
      * @param alkuY Alkusolmun y-koordinaatti.
-     * @param loppuX  Loppusolmun x-koordinaatti.
-     * @param loppuY  Loppusolmun y-koordinaatti.
-     * @param verkko  Verkko, jossa haku tehdään.
+     * @param loppuX Loppusolmun x-koordinaatti.
+     * @param loppuY Loppusolmun y-koordinaatti.
+     * @param verkko Verkko, jossa haku tehdään.
      */
-    public void haeLyhimmatPolut(int alkuX, int alkuY, int loppuX, int loppuY, Verkko verkko) {
+    @Override
+    public void haeLyhinPolku(Verkko verkko, int alkuX, int alkuY, int loppuX, int loppuY) {
         verkko.haeSolmu(alkuX, alkuY).setMinimiEtaisyys(0);
         for (int i = 0; i < verkko.haeLeveys(); i++) {
             for (int j = 0; j < verkko.haePituus(); j++) {
@@ -66,4 +67,16 @@ public class Dijkstra {
             kohdeSolmu.setEdellinen(alkuSolmu);
         }
     }
+    
+    @Override
+    public String tulos(long tulosMillisekunteina) {
+        return "Dijkstran algoritmilla polunetsintä kesti " + tulosMillisekunteina + " millisekuntia.";
+    }
+
+    @Override
+    public String algoritminNimi() {
+        return "Dijkstra";
+    }
+    
+    
 }

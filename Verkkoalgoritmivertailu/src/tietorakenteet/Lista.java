@@ -1,17 +1,16 @@
 package tietorakenteet;
 
 import java.util.Iterator;
-import verkko.Kaari;
 
 /**
- * Lista on taulukkopohjainen tietorakennne, johon voi lisätä kaaria. Kaaret
- * menevät taulukkoon lisäämisjärjestyksessä. Listaan lisääminen ei onnistu, jos
- * taulukko on täynnä.
+ * Lista on järjestyksessä täyttyvä taulukko, joka kasvaa automaattisesti.
  *
+ * @param <E> Tyyppiparametri, joka kertoo millaisia olioita Listaan
+ * talletetaan.
  */
-public class Lista implements Iterable<Kaari> {
+public class Lista<E> implements Iterable<E> {
 
-    private final Kaari[] kaaret;
+    private Object[] taulukko;
     private int indeksi;
 
     /**
@@ -20,7 +19,7 @@ public class Lista implements Iterable<Kaari> {
      * @param koko Listan koko.
      */
     public Lista(int koko) {
-        kaaret = new Kaari[koko];
+        taulukko = new Object[koko];
         indeksi = 0;
     }
 
@@ -29,14 +28,17 @@ public class Lista implements Iterable<Kaari> {
     }
 
     /**
-     * Metodilla lisätään taulukkoon solmu.
+     * Metodilla lisätään taulukkoon alkio.
      *
-     * @param e Lisättävä kaari.
+     * @param e Lisättävä alkio.
      */
-    public void add(Kaari e) {
-        if (indeksi != kaaret.length) {
-            kaaret[indeksi] = e;
+    public void add(E e) {
+        if (indeksi != taulukko.length) {
+            taulukko[indeksi] = e;
             indeksi++;
+        } else {
+            kasvataKaksinkertaiseksi();
+            add(e);
         }
     }
 
@@ -45,17 +47,38 @@ public class Lista implements Iterable<Kaari> {
      *
      * @return Listan sisältämä taulukko.
      */
-    public Kaari[] haeTaulukko() {
-        return kaaret;
+    public Object[] haeTaulukko() {
+        return (E[]) taulukko;
     }
 
     @Override
-    public Iterator<Kaari> iterator() {
-        return new ListaIterator(indeksi, kaaret);
+    public Iterator<E> iterator() {
+        return new ListaIterator(indeksi, taulukko);
+    }
+
+    /**
+     * Metodi palauttaa alkion annetussa indeksissä.
+     *
+     * @param indeksi Indeksi, josta alkio haetaan.
+     * @return Alkio annetussa indeksissä.
+     */
+    public E get(int indeksi) {
+        return (E) taulukko[indeksi];
+    }
+
+    /**
+     * Metodi kasvattaa Listan koon kaksinkertaiseksi.
+     */
+    private void kasvataKaksinkertaiseksi() {
+        Object[] uusiTaulukko = new Object[taulukko.length * 2];
+        for (int i = 0; i < taulukko.length; i++) {
+            uusiTaulukko[i] = taulukko[i];
+        }
+        taulukko = uusiTaulukko;
     }
     
-    public Kaari get(int indeksi) {
-        return kaaret[indeksi];
+    public int koko() {
+        return taulukko.length;
     }
 
 }

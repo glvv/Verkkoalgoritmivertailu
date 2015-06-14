@@ -5,18 +5,33 @@ import verkko.Kaari;
 import verkko.Solmu;
 import verkko.Verkko;
 
-public class Bidirectional {
+/**
+ * Luokka tarjoaa toiminnallisuuden lyhimmän polun etsimiseen
+ * Bidirectional-algoritmilla.
+ */
+public class Bidirectional implements PolunetsintaAlgoritmi {
 
+    /**
+     * Metodi hakee lyhimmän polun annetussa verkossa annetusta aloitussolmusta
+     * annettuun loppusolmuun.
+     *
+     * @param verkko Verkko, jossa haku tehdään.
+     * @param alkuX Aloitussolmun x-koordinaatti.
+     * @param alkuY AloitusSolmun y-koordinaatti.
+     * @param loppuX Lopetussolmun x-koordinaatti.
+     * @param loppuY Lopetussolmun y-koordinaatti.
+     */
+    @Override
     public void haeLyhinPolku(Verkko verkko, int alkuX, int alkuY, int loppuX, int loppuY) {
         boolean[][] alustaKaydyt = new boolean[verkko.haeLeveys()][verkko.haePituus()];
         Jono alku = new Jono(10);
         Jono loppu = new Jono(10);
-        
+
         Solmu alkuSolmu = verkko.haeSolmu(alkuX, alkuY);
         alkuSolmu.setMinimiEtaisyys(0);
         alkuSolmu.setKasitelty(true);
         alku.enqueue(alkuSolmu);
-        
+
         Solmu loppuSolmu = verkko.haeSolmu(loppuX, loppuY);
         loppuSolmu.setMinimiEtaisyys(0);
         loppuSolmu.setKasitelty(true);
@@ -50,6 +65,12 @@ public class Bidirectional {
         }
     }
 
+    /**
+     * Metodi yhdistää alku- ja loppusolmusta alkavan polun.
+     *
+     * @param u Alkusolmu.
+     * @param k Loppusolmu.
+     */
     private void yhdistaPolku(Solmu u, Solmu k) {
         Solmu a = u;
         Solmu edellinen = k;
@@ -65,4 +86,15 @@ public class Bidirectional {
         a.setEdellinen(edellinen);
         a.setMinimiEtaisyys(etaisyys);
     }
+
+    @Override
+    public String tulos(long tulosMillisekunteina) {
+        return "Bidirectional algoritmilla polunetsintä kesti " + tulosMillisekunteina + " millisekuntia.";
+    }
+
+    @Override
+    public String algoritminNimi() {
+        return "Bidirectional";
+    }
+
 }

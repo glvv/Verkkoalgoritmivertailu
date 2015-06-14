@@ -11,8 +11,8 @@ import verkko.Solmu;
 
 public class KekoSolmuTest {
     
-    private KekoSolmu kekosolmu;
-    private KekoSolmu kekosolmu2;
+    private BinaariKekoSolmu kekosolmu;
+    private BinaariKekoSolmu kekosolmu2;
     
     public KekoSolmuTest() {
     }
@@ -29,8 +29,8 @@ public class KekoSolmuTest {
     public void setUp() {
         Solmu s = new Solmu(3, 3);
         s.setMinimiEtaisyys(6);
-        kekosolmu = new KekoSolmu(s);
-        kekosolmu2 = new KekoSolmu(new Solmu(2, 2));
+        kekosolmu = new BinaariKekoSolmu(s);
+        kekosolmu2 = new BinaariKekoSolmu(new Solmu(2, 2));
     }
     
     @After

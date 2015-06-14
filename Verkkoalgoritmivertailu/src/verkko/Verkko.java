@@ -52,7 +52,7 @@ public class Verkko {
      * kaarten painot luetaan.
      */
     private void haeKaaret(int x, int y, char[][] kentta) {
-        Lista kaaret = new Lista(8);
+        Lista<Kaari> kaaret = new Lista<>(8);
         haeKaari(x + 1, y, kentta, kaaret);
         haeKaari(x - 1, y, kentta, kaaret);
         haeKaari(x, y + 1, kentta, kaaret);
