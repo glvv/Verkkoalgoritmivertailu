@@ -50,6 +50,10 @@ public class Bidirectional implements PolunetsintaAlgoritmi {
                 }
             }
             Solmu u2 = loppu.dequeue();
+            if (alustaKaydyt[u2.getX()][u2.getY()]) {
+                yhdistaPolku(u2.getEdellinen(), u2);
+                return;
+            }
             for (Kaari v : u2.getKaaret()) {
                 Solmu k = v.getKohdeSolmu();
                 if (alustaKaydyt[k.getX()][k.getY()]) {

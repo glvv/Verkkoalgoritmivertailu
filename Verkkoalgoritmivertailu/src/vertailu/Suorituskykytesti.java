@@ -13,33 +13,66 @@ import verkko.Verkko;
 public class Suorituskykytesti {
 
     public static void main(String[] args) {
-        testaaLabyrintti(9, new Fibonaccikeko(), false, 10);
+        testaaPainollinenVerkko(11, new Fibonaccikeko(), false, 10);
     }
 
     /**
-     * Metodi testaa labyrintin Dijkstra, A*, BFS ja Bidirectional
-     * -algoritmeilla.
+     * Metodilla voidaan testata Dijkstra ja A*-algoritmien toimintaa
+     * painollisissa verkoissa. Metodi toistaa testit usemman kerran ja tulostaa
+     * keskiarvot. Ensimmäinen luku on Dijkstran algoritmin suoritusaika ja
+     * toinen on A*-algoritmin suoritusaika.
+     *
+     * @param testikuva Testikuvan indeksi testikuvataulukossa.
+     * @param keko Keko, jota Dijkstra ja A* -algoritmit käyttävät.
+     * @param luoRatkaisut Piirretäänkö algoritmien löytämät ratkaisut.
+     * @param toistokertoja Kuinka monta kertaa testit toistetaan.
+     */
+    public static void testaaPainollinenVerkko(int testikuva, Minimikeko keko, boolean luoRatkaisut, int toistokertoja) {
+        long[] tulokset = new long[2];
+        for (int i = 0; i < toistokertoja; i++) {
+            String kuva = testiPainollisetKentat[testikuva];
+            keko.clear();
+            tulokset[0] += testaaKentta(kuva, new Dijkstra(keko), luoRatkaisut, true);
+            keko.clear();
+            tulokset[1] += testaaKentta(kuva, new AStar(keko), luoRatkaisut, true);
+        }
+        for (int i = 0; i < 2; i++) {
+            tulokset[i] = tulokset[i] / toistokertoja;
+            System.out.println(tulokset[i]);
+        }
+        System.out.println();
+    }
+
+    /**
+     * Metodi testaa polunetsintää painottomassa verkossa Dijkstra, A*, BFS ja
+     * Bidirectional -algoritmeilla. Metodi toistaa testit usemman kerran ja
+     * tulostaa keskiarvot. Ensimmäinen luku on Dijkstran algoritmin
+     * suoritusaika, toinen on A*-algoritmin suoritusaika, kolmas on
+     * BFS-algoritmin suoritusaika ja neljäs on Bidirectional-algoritmin
+     * suoritusaika.
      *
      * @param testikuva Testikuvan indeksi testikuvataulukossa.
      * @param keko Keko, jota Dijkstra ja A* -algoritmit käyttävät.
      * @param luoRatkaisut Luodaanko kuvat, joihin ratkaisut ja läpikäydyt
      * solmut ovat piirretty.
+     * @param toistoKertoja Kuinka monta kertaa testit suoritetaan.
      */
-    public static void testaaLabyrintti(int testikuva, Minimikeko keko, boolean luoRatkaisut, int toistoKertoja) {
-        long[] tulokset = new long[2];
+    public static void testaaPainotonVerkko(int testikuva, Minimikeko keko, boolean luoRatkaisut, int toistoKertoja) {
+        long[] tulokset = new long[4];
         for (int i = 0; i < toistoKertoja; i++) {
             String kuva = testiLabyrintit[testikuva];
             keko.clear();
             tulokset[0] += testaaKentta(kuva, new Dijkstra(keko), luoRatkaisut, false);
             keko.clear();
             tulokset[1] += testaaKentta(kuva, new AStar(keko), luoRatkaisut, false);
-//            tulokset[2] += testaaKentta(kuva, new BFS(), luoRatkaisut, false);
-//            tulokset[3] += testaaKentta(kuva, new Bidirectional(), luoRatkaisut, false);
+            tulokset[2] += testaaKentta(kuva, new BFS(), luoRatkaisut, false);
+            tulokset[3] += testaaKentta(kuva, new Bidirectional(), luoRatkaisut, false);
         }
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
             tulokset[i] = tulokset[i] / toistoKertoja;
             System.out.println(tulokset[i]);
         }
+        System.out.println("");
     }
 
     /**
@@ -63,7 +96,6 @@ public class Suorituskykytesti {
         int pituus = kentta[0].length;
 
         Verkko verkko = new Verkko(kentta, false, luoKaaretMustiinRuutuihin);
-        
         System.gc();
         long a = System.currentTimeMillis();
         algoritmi.haeLyhinPolku(verkko, 0, 0, leveys - 1, pituus - 1);
@@ -71,7 +103,7 @@ public class Suorituskykytesti {
         long tulos = b - a;
 
         if (luoRatkaisu) {
-            kirjoitaRatkaisu(verkko, "images/" + algoritmi.algoritminNimi() + "Ratkaisu.bmp", kentta, leveys - 1, pituus - 1);
+            kirjoitaRatkaisu(verkko, "images/ratkaisut/" + algoritmi.algoritminNimi() + "Ratkaisu.bmp", kentta, leveys - 1, pituus - 1);
         }
         return tulos;
     }
@@ -130,7 +162,7 @@ public class Suorituskykytesti {
                 }
             }
         }
-        System.out.println("Algoritmi merkitsee läpikäydyksi " + kaytyjenSolmujenMaara + " solmua.");
+
     }
 
     /**
@@ -149,16 +181,62 @@ public class Suorituskykytesti {
         return kopio;
     }
 
+    /**
+     * Painottomien verkkojen testikuvien tiedostopolut.
+     */
     private static final String[] testiLabyrintit = {
-        "images/labyrintti100100.bmp",
-        "images/labyrintti251251.bmp",
-        "images/labyrintti300300.bmp",
-        "images/labyrintti251502.bmp",
-        "images/labyrintti500500.bmp",
-        "images/labyrintti5001000.bmp",
-        "images/labyrintti10001000.bmp",
-        "images/labyrintti10002000.bmp",
-        "images/labyrintti20002000.bmp",
-        "images/labyrintti20004000.bmp",
-        "images/labyrintti40004000.bmp",};
+        //Vaikeat labyrintit 0 - 10.
+        "images/labyrintit/labyrintti100100.bmp",
+        "images/labyrintit/labyrintti251251.bmp",
+        "images/labyrintit/labyrintti300300.bmp",
+        "images/labyrintit/labyrintti251502.bmp",
+        "images/labyrintit/labyrintti500500.bmp",
+        "images/labyrintit/labyrintti5001000.bmp",
+        "images/labyrintit/labyrintti10001000.bmp",
+        "images/labyrintit/labyrintti10002000.bmp",
+        "images/labyrintit/labyrintti20002000.bmp",
+        "images/labyrintit/labyrintti20004000.bmp",
+        "images/labyrintit/labyrintti40004000.bmp",
+        //Helpot labyrintit 11 - 21.
+        "images/helpotlabyrintit/helppolabyrintti100100.bmp",
+        "images/helpotlabyrintit/helppolabyrintti200100.bmp",
+        "images/helpotlabyrintit/helppolabyrintti200200.bmp",
+        "images/helpotlabyrintit/helppolabyrintti400200.bmp",
+        "images/helpotlabyrintit/helppolabyrintti400400.bmp",
+        "images/helpotlabyrintit/helppolabyrintti800400.bmp",
+        "images/helpotlabyrintit/helppolabyrintti800800.bmp",
+        "images/helpotlabyrintit/helppolabyrintti1600800.bmp",
+        "images/helpotlabyrintit/helppolabyrintti16001600.bmp",
+        "images/helpotlabyrintit/helppolabyrintti32001600.bmp",
+        "images/helpotlabyrintit/helppolabyrintti32003200.bmp",};
+
+    /**
+     * Painollisten kenttien tiedostopolut.
+     */
+    private static final String[] testiPainollisetKentat = {
+        //Vaikeat painolliset kentät 0 - 10.
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI100100.bmp",
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI200100.bmp",
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI200200.bmp",
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI200400.bmp",
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI400400.bmp",
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI400800.bmp",
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI800800.bmp",
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI1600800.bmp",
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI16001600.bmp",
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI32001600.bmp",
+        "images/painollisetverkot/PAINOLLINENLABYRINTTI32003200.bmp",
+        //Helpot painolliset kentät 11 - 21.
+        "images/helpotpainolliset/helppopainollinen100100.bmp",
+        "images/helpotpainolliset/helppopainollinen200100.bmp",
+        "images/helpotpainolliset/helppopainollinen200200.bmp",
+        "images/helpotpainolliset/helppopainollinen400200.bmp",
+        "images/helpotpainolliset/helppopainollinen400400.bmp",
+        "images/helpotpainolliset/helppopainollinen800400.bmp",
+        "images/helpotpainolliset/helppopainollinen800800.bmp",
+        "images/helpotpainolliset/helppopainollinen1600800.bmp",
+        "images/helpotpainolliset/helppopainollinen16001600.bmp",
+        "images/helpotpainolliset/helppopainollinen32001600.bmp",
+        "images/helpotpainolliset/helppopainollinen32003200.bmp",};
+
 }

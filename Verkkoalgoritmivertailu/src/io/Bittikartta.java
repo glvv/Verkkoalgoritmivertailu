@@ -53,7 +53,7 @@ public class Bittikartta {
         try {
             kuva = ImageIO.read(new File(tiedosto));
         } catch (Exception x) {
-
+            System.out.println(x.fillInStackTrace());
         }
         return kuva;
     }
@@ -103,7 +103,7 @@ public class Bittikartta {
             }
             ImageIO.write(ratkaistuKuva, "bmp", new File(tiedostoPolku));
         } catch (IOException ex) {
-
+            
         }
     }
 

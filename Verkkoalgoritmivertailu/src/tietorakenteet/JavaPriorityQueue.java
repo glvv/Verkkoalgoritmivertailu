@@ -62,10 +62,12 @@ public class JavaPriorityQueue implements Minimikeko {
     public void decreaseKey(Solmu vanha) {
         int uusiArvo = vanha.getEtaisyysLoppusolmuun() + vanha.getMinimiEtaisyys();
         BinaariKekoSolmu ks = (BinaariKekoSolmu) vanha.getSolmuKeossa();
-        if (keko.contains(ks)) {
-            keko.remove(ks);
-            ks.setAvainArvo(uusiArvo);
-            keko.add(ks);
+        if (uusiArvo < ks.getAvainArvo()) {
+            if (keko.contains(ks)) {
+                keko.remove(ks);
+                ks.setAvainArvo(uusiArvo);
+                keko.add(ks);
+            }
         }
     }
 

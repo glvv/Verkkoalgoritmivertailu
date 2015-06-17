@@ -28,6 +28,7 @@ public class Fibonaccikeko implements Minimikeko {
      */
     @Override
     public void insert(Solmu s) {
+        //Jos Solmuun s liittyy jo kekosolmu, se tarkoittaa, että solmu on jo keossa. Tällöin solmua ei lisätä.
         if (s.getSolmuKeossa() == null) {
             FibonaccikekoSolmu uusi = new FibonaccikekoSolmu(s);
             s.setSolmuKeossa(uusi);
@@ -96,6 +97,7 @@ public class Fibonaccikeko implements Minimikeko {
     public Solmu delMin() {
         FibonaccikekoSolmu s = min;
         if (s.getChild() != null) {
+            //Jos poistettavalla kekosolmulla on lapsia ne irrotetaan yksitellen ja yhdistetään juurilistaan.
             FibonaccikekoSolmu l = s.getChild();
             while (l.getRight() != l) {
                 FibonaccikekoSolmu n = l.getRight();
@@ -115,6 +117,7 @@ public class Fibonaccikeko implements Minimikeko {
         if (s.getRight() == s) {
             min = null;
         } else {
+            //min on tässä vaiheessa tuntematon, joten se voi olla mikä tahansa. Uusi min asetetaan vakauta-operaatiossa.
             min = min.getRight();
             vakauta();
         }
@@ -128,6 +131,8 @@ public class Fibonaccikeko implements Minimikeko {
      * degree-arvo.
      */
     private void vakauta() {
+        //Juurilista iteroidaan lisäämällä kaikki juurisolmut Lista-olioon.
+
         FibonaccikekoSolmu[] a = new FibonaccikekoSolmu[laskeTarvittavaKoko()];
         Lista<FibonaccikekoSolmu> l = new Lista<>(10);
         FibonaccikekoSolmu w = min;
@@ -135,6 +140,7 @@ public class Fibonaccikeko implements Minimikeko {
             w = w.getRight();
             l.add(w);
         } while (min != w);
+        //Koko juurilista käydään läpi. Jos löytyy kaksi puuta, joilla on sama degree-arvo, toinen asetetaan toisen lapseksi.
         for (FibonaccikekoSolmu q : l) {
             FibonaccikekoSolmu x = q;
             int d = x.getDegree();
@@ -151,6 +157,7 @@ public class Fibonaccikeko implements Minimikeko {
             }
             a[d] = x;
         }
+        //Juurilista rakennetaan uudelleen ja uusi min asetetaan.
         min = null;
         for (int i = 0; i < a.length; i++) {
             if (a[i] != null) {
@@ -192,10 +199,13 @@ public class Fibonaccikeko implements Minimikeko {
      * lisätään.
      */
     private void asetaLapseksi(FibonaccikekoSolmu y, FibonaccikekoSolmu x) {
+        //Leikataan y pois listasta.
+        
         y.getLeft().setRight(y.getRight());
         y.getRight().setLeft(y.getLeft());
         y.setLeft(y);
         y.setRight(y);
+        
 
         if (x.getChild() != null) {
             yhdistaKaksiListaa(y, x.getChild());
